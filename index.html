@@ -3,177 +3,123 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Laundry Manager — Admin Panel</title>
+<title>Laundry Manager — Single File App</title>
 <style>
+  /* -------------------------
+     Variables & Base Styles
+     ------------------------*/
   :root{
-    --bg:#0f1724;
-    --card:#0b1120;
-    --accent:#06b6d4; /* cyan */
-    --accent-2:#7c3aed; /* purple */
-    --muted:#94a3b8;
-    --glass: rgba(255,255,255,0.04);
-    --success:#10b981;
-    --danger:#ef4444;
-    --glass-2: rgba(255,255,255,0.02);
+    --bg1: #071024;
+    --bg2: #061320;
+    --card: rgba(255,255,255,0.03);
+    --muted: rgba(255,255,255,0.7);
+    --glass: rgba(255,255,255,0.03);
+    --accent-a: #06b6d4; /* cyan */
+    --accent-b: #7c3aed; /* purple */
+    --success: #10b981;
+    --danger: #ef4444;
     --radius:14px;
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   }
-
-  /* Reset + base */
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
     margin:0;
-    background: linear-gradient(180deg,#071024 0%, #051023 100%);
+    background: linear-gradient(180deg,#08142a 0%, #041424 100%);
     color:#e6eef6;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     padding:18px;
   }
 
-  /* Layout */
+  /* App layout */
   .app{
     max-width:1200px;
     margin:0 auto;
     display:grid;
-    grid-template-columns: 260px 1fr;
-    gap:20px;
+    grid-template-columns:260px 1fr;
+    gap:18px;
   }
-
-  /* Responsive: collapse to single column on narrow screens */
-  @media (max-width:900px){
-    .app{grid-template-columns: 1fr; padding-bottom:40px}
-    nav.sidebar{position:sticky; top:12px; z-index:10}
+  @media (max-width:920px){
+    .app{grid-template-columns:1fr;padding:12px;}
   }
 
   /* Sidebar */
   nav.sidebar{
-    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border-radius:var(--radius);
-    padding:18px;
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-    min-height:420px;
-    box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:18px;border-radius:var(--radius);min-height:540px;box-shadow:0 8px 28px rgba(2,6,23,0.6);
+    display:flex;flex-direction:column;gap:14px;
   }
-
-  .brand{
-    display:flex;gap:12px;align-items:center;
-  }
+  .brand{display:flex;gap:12px;align-items:center}
   .logo{
-    width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    display:grid;place-items:center;
-    box-shadow:0 4px 14px rgba(124,58,237,0.18);
+    width:52px;height:52px;border-radius:12px;
+    background: linear-gradient(135deg,var(--accent-a),var(--accent-b));
+    display:grid;place-items:center;box-shadow:0 8px 20px rgba(124,58,237,0.12)
   }
-  .logo svg{width:26px;height:26px;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.35))}
-  .brand h1{font-size:16px;margin:0}
-  .brand p{margin:0;font-size:12px;color:var(--muted)}
+  .logo strong{font-size:16px;color:#041025}
+  .brand-title{line-height:1}
+  .brand-title h1{font-size:16px;margin:0}
+  .brand-title p{margin:0;font-size:12px;color:var(--muted)}
 
-  .nav-links{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .nav-links{display:flex;flex-direction:column;gap:8px;margin-top:8px}
   .nav-links button{
-    background:transparent;border:0;padding:10px;border-radius:10px;color:inherit;text-align:left;
-    display:flex;align-items:center;gap:10px;font-weight:600;cursor:pointer;
-    transition:all .18s ease;
+    display:flex;gap:10px;align-items:center;border:0;padding:10px;border-radius:10px;background:transparent;color:inherit;font-weight:700;
+    cursor:pointer;transition:all .16s ease;text-align:left;
   }
   .nav-links button:hover{transform:translateX(6px)}
   .nav-links button.active{
-    background:linear-gradient(90deg, rgba(6,182,212,0.12), rgba(124,58,237,0.08));
+    background: linear-gradient(90deg, rgba(6,182,212,0.10), rgba(124,58,237,0.06));
     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
   }
-  .nav-links svg{opacity:0.9}
 
-  .sidebar-footer{margin-top:auto;font-size:13px;color:var(--muted)}
+  .sidebar-footer{margin-top:auto;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
 
-  /* Main content */
-  main.container{
-    display:flex;flex-direction:column;gap:18px;
-  }
-
-  .topbar{
-    display:flex;justify-content:space-between;align-items:center;gap:12px;
-  }
-  .search{
-    display:flex;align-items:center;gap:10px;background:var(--glass);padding:8px;border-radius:12px;min-width:170px;
-  }
+  /* Main area */
+  main.container{display:flex;flex-direction:column;gap:16px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .search{display:flex;align-items:center;gap:10px;background:var(--glass);padding:8px;border-radius:12px;min-width:160px}
   .search input{background:transparent;border:0;outline:none;color:inherit;font-size:14px}
 
-  .cards{
-    display:grid;grid-template-columns: repeat(4,1fr);gap:14px;
-  }
-  @media (max-width:1100px){ .cards{grid-template-columns: repeat(2,1fr)} }
-  @media (max-width:520px){ .cards{grid-template-columns: 1fr} }
-
-  .card{
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6);
-  }
+  /* Cards */
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.cards{grid-template-columns:1fr}}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:14px;border-radius:12px}
   .card h3{margin:0;font-size:13px;color:var(--muted)}
-  .card p{margin:6px 0 0;font-size:22px;font-weight:700}
+  .card p{margin:8px 0 0;font-size:20px;font-weight:800}
 
-  /* Sections */
-  .panel{
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6);
-  }
+  /* Panels */
+  .panel{background:linear-gradient(180deg,#071024,#061320);padding:14px;border-radius:12px;box-shadow:0 10px 30px rgba(2,6,23,0.6)}
+  .panel-inner{overflow:auto;padding-top:8px}
 
-  /* Responsive tables and forms */
-  table{
-    width:100%;border-collapse:collapse;font-size:14px;
-  }
+  /* Buttons */
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:700;transition:transform .12s ease, box-shadow .12s ease}
+  .btn-primary{background:linear-gradient(90deg,var(--accent-a),var(--accent-b));color:#041025;box-shadow:0 10px 30px rgba(6,182,212,0.08)}
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.03);color:inherit}
+  .btn-danger{background:linear-gradient(90deg,#ff7a7a,#ff5a5a);color:#041025}
+
+  .form-row{display:flex;gap:8px;flex-wrap:wrap}
+  .field{flex:1;min-width:140px}
+  label{display:block;font-size:13px;margin-bottom:6px;color:var(--muted)}
+  input,select,textarea{width:100%;padding:10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:inherit}
+
+  /* Tables */
+  table{width:100%;border-collapse:collapse;font-size:14px}
   thead th{ text-align:left;color:var(--muted);font-weight:700;padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.03)}
   tbody td{padding:10px 8px;border-bottom:1px dashed rgba(255,255,255,0.02)}
-  .small{font-size:12px;color:var(--muted)}
-  .muted{color:var(--muted)}
+  .empty{padding:16px;border-radius:8px;text-align:center;color:var(--muted)}
 
-  /* Controls */
-  .btn{
-    display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:700;
-    transition:transform .12s ease, box-shadow .12s ease;
-  }
-  .btn:active{transform:translateY(1px)}
-  .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041025;box-shadow:0 8px 28px rgba(6,182,212,0.12)}
-  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.03);color:inherit}
-  .btn-danger{background:linear-gradient(90deg,#ff7a7a,#ff5a5a);color:#fff}
-
-  .form-row{display:flex;gap:10px;flex-wrap:wrap}
-  .field{flex:1;min-width:160px}
-  label{display:block;font-size:13px;margin-bottom:6px;color:var(--muted)}
-  input,select,textarea{
-    width:100%;padding:10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:inherit;
-  }
-
-  /* small UI niceties */
-  .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:700}
-  .muted-small{font-size:12px;color:var(--muted)}
-  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-
-  /* Mobile safe container inside panels */
-  .panel-inner{overflow:auto;padding-bottom:6px}
-
-  /* modal */
-  .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.55);display:none;justify-content:center;align-items:center;padding:20px}
-  .modal{background:linear-gradient(180deg,#071024,#061320);padding:18px;border-radius:12px;max-width:920px;width:100%}
+  /* Modal */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;justify-content:center;align-items:center;padding:16px;z-index:50}
+  .modal{background:linear-gradient(180deg,#071024,#061320);padding:16px;border-radius:12px;max-width:920px;width:100%}
   .modal.show{animation:pop .12s ease both}
   @keyframes pop{from{transform:translateY(8px) scale(.995);opacity:0}to{transform:none;opacity:1}}
 
-  /* tiny icons */
-  .icon{width:18px;height:18px;display:inline-block;vertical-align:middle}
-
-  /* helper to ensure nothing escapes horizontally */
+  /* Misc */
+  .muted{color:var(--muted)}
+  .small{font-size:13px}
+  .service-line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .no-overflow{overflow-x:hidden}
-
-  /* subtle hover on rows */
-  tbody tr:hover{background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent)}
-  .muted-2{color:rgba(255,255,255,0.6)}
-
-  /* form micro interactions */
-  .service-line{display:flex;gap:8px;align-items:center}
-  .service-line select{flex:2}
-  .service-line input{flex:1}
-
-  /* empty states */
-  .empty{padding:28px;border-radius:8px;text-align:center;color:var(--muted)}
 </style>
 </head>
 <body class="no-overflow">
@@ -181,17 +127,10 @@
     <!-- SIDEBAR -->
     <nav class="sidebar" aria-label="Main navigation">
       <div class="brand">
-        <div class="logo" aria-hidden="true">
-          <!-- simple laundry icon -->
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7 10c0-2.761 3.134-5 7-5s7 2.239 7 5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M3 20c0-4 4-6 8-6s8 2 8 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
-            <circle cx="12" cy="7" r="1.6" fill="#041025"/>
-          </svg>
-        </div>
-        <div>
+        <div class="logo" aria-hidden="true"><strong>LM</strong></div>
+        <div class="brand-title">
           <h1>Laundry Manager</h1>
-          <p>Admin Dashboard</p>
+          <p>Admin • Single page</p>
         </div>
       </div>
 
@@ -206,15 +145,11 @@
       </div>
 
       <div class="sidebar-footer">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div class="muted-small">Logged in as</div>
-            <div><strong>Admin</strong></div>
-          </div>
-          <div style="text-align:right">
-            <div class="badge">v1.0</div>
-          </div>
+        <div style="font-size:13px">
+          <div class="muted small">Logged in as</div>
+          <div><strong>Admin</strong></div>
         </div>
+        <div class="muted small">v1.0</div>
       </div>
     </nav>
 
@@ -223,54 +158,42 @@
       <!-- TOP -->
       <div class="topbar">
         <div style="display:flex;gap:12px;align-items:center">
-          <div class="search" title="Search customers, orders">
-            <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="11" r="6" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
-            <input id="globalSearch" placeholder="Search customers or voucher..." />
+          <div class="search" title="Search customers or vouchers">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M21 21l-4.35-4.35" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="11" r="6" stroke="#fff" stroke-width="1.6" /></svg>
+            <input id="globalSearch" placeholder="Search customers, phone or voucher..." />
           </div>
-          <div class="row">
+          <div style="display:flex;gap:8px">
             <button class="btn btn-primary" id="btnNewCustomer">+ New Customer</button>
             <button class="btn btn-ghost" id="btnNewOrder">+ New Order</button>
           </div>
         </div>
 
-        <div style="display:flex;gap:10px;align-items:center">
-          <div class="muted-small">Theme</div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="muted small">Theme</div>
           <button class="btn btn-ghost" id="toggleCompact">Compact</button>
         </div>
       </div>
 
-      <!-- Dashboard Panel -->
+      <!-- DASHBOARD -->
       <section class="panel" id="panel-dashboard" role="tabpanel">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <div>
             <h2 style="margin:0 0 6px 0">Dashboard</h2>
-            <div class="muted-small">Overview of your laundry business</div>
+            <div class="muted small">Overview of your laundry business</div>
           </div>
-          <div class="muted-small">Today: <strong id="todayDate"></strong></div>
+          <div class="muted small">Today: <strong id="todayDate"></strong></div>
         </div>
 
         <div style="height:12px"></div>
 
         <div class="cards">
-          <div class="card">
-            <h3>Total Customers</h3>
-            <p id="statCustomers">0</p>
-          </div>
-          <div class="card">
-            <h3>Total Orders</h3>
-            <p id="statOrders">0</p>
-          </div>
-          <div class="card">
-            <h3>Outstanding Balance</h3>
-            <p id="statBalance">PKR 0</p>
-          </div>
-          <div class="card">
-            <h3>Services</h3>
-            <p id="statServices">0</p>
-          </div>
+          <div class="card"><h3>Total Customers</h3><p id="statCustomers">0</p></div>
+          <div class="card"><h3>Total Orders</h3><p id="statOrders">0</p></div>
+          <div class="card"><h3>Outstanding Balance</h3><p id="statBalance">PKR 0</p></div>
+          <div class="card"><h3>Services</h3><p id="statServices">0</p></div>
         </div>
 
-        <div style="height:14px"></div>
+        <div style="height:12px"></div>
 
         <div class="panel" aria-label="recent orders">
           <h3 style="margin:0 0 10px 0">Recent Orders</h3>
@@ -281,14 +204,13 @@
             </table>
           </div>
         </div>
-
       </section>
 
-      <!-- Customers Panel -->
+      <!-- CUSTOMERS -->
       <section class="panel" id="panel-customers" style="display:none" role="tabpanel">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <h2 style="margin:0">Customers</h2>
-          <div class="muted-small">Add and manage customers</div>
+          <div class="muted small">Add and manage customers</div>
         </div>
 
         <div style="height:12px"></div>
@@ -310,11 +232,11 @@
         </div>
       </section>
 
-      <!-- Orders Panel -->
+      <!-- ORDERS -->
       <section class="panel" id="panel-orders" style="display:none" role="tabpanel">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <h2 style="margin:0">Orders</h2>
-          <div class="muted-small">Create and view orders</div>
+          <div class="muted small">Create and view orders</div>
         </div>
 
         <div style="height:12px"></div>
@@ -340,11 +262,11 @@
         </div>
       </section>
 
-      <!-- Services Panel -->
+      <!-- SERVICES -->
       <section class="panel" id="panel-services" style="display:none" role="tabpanel">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <h2 style="margin:0">Services</h2>
-          <div class="muted-small">Manage service types & prices</div>
+          <div class="muted small">Manage service types & prices</div>
         </div>
 
         <div style="height:12px"></div>
@@ -363,11 +285,11 @@
         </div>
       </section>
 
-      <!-- Payments Panel -->
+      <!-- PAYMENTS -->
       <section class="panel" id="panel-payments" style="display:none" role="tabpanel">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <h2 style="margin:0">Payments</h2>
-          <div class="muted-small">Record payments for orders</div>
+          <div class="muted small">Record payments for orders</div>
         </div>
 
         <div style="height:12px"></div>
@@ -382,11 +304,11 @@
         </div>
       </section>
 
-      <!-- Reports Panel -->
+      <!-- REPORTS -->
       <section class="panel" id="panel-reports" style="display:none" role="tabpanel">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <h2 style="margin:0">Reports</h2>
-          <div class="muted-small">Quick summaries (generated from stored orders)</div>
+          <div class="muted small">Quick summaries</div>
         </div>
 
         <div style="height:12px"></div>
@@ -398,16 +320,16 @@
         </div>
 
         <div class="panel-inner">
-          <div id="reportOutput" class="muted-small">Choose a range above to generate a report.</div>
+          <div id="reportOutput" class="muted small">Choose a range above to generate a report.</div>
         </div>
       </section>
 
-      <!-- Settings Panel -->
+      <!-- SETTINGS -->
       <section class="panel" id="panel-settings" style="display:none" role="tabpanel">
         <h2 style="margin:0">Settings</h2>
         <div style="height:10px"></div>
         <div class="panel-inner">
-          <div class="muted-small">Configure global settings</div>
+          <div class="muted small">Configure global settings</div>
           <div style="height:12px"></div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <div style="min-width:160px">
@@ -424,167 +346,135 @@
     </main>
   </div>
 
-  <!-- Modal backdrop -->
+  <!-- modal backdrop -->
   <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" id="modalWindow">
-      <!-- content injected by JS -->
-    </div>
+    <div class="modal" role="dialog" aria-modal="true" id="modalWindow"></div>
   </div>
 
 <script>
-/*
-  Laundry Manager - Single-file front-end
-  - Uses localStorage keys: lm_customers, lm_services, lm_orders, lm_payments, lm_voucherSeq
-  - Voucher logic: global incrementing integer stored in lm_voucherSeq. Each new order gets a new voucher like: LND-0001
-  - You can swap localStorage calls for API calls later.
-*/
+/* ------------------------------
+   Laundry Manager - Single File
+   - All data stored in localStorage
+   - App starts empty so you can add your own items
+   ------------------------------ */
 
-/* ---------- Utilities ---------- */
+/* Utils */
 const qs = s => document.querySelector(s);
 const qsa = s => Array.from(document.querySelectorAll(s));
-const formatCurrency = (n) => {
-  const cur = (localStorage.getItem('lm_settings') && JSON.parse(localStorage.getItem('lm_settings')).currency) || 'PKR';
-  return ${cur} ${Number(n||0).toLocaleString()};
-};
 const uid = () => 'id-' + Math.random().toString(36).slice(2,9);
+const todayDate = () => new Date().toLocaleDateString();
+const formatCurrency = (n) => {
+  const st = JSON.parse(localStorage.getItem('lm_settings')||'{}');
+  const c = (st.currency) ? st.currency : 'PKR';
+  return ${c} ${Number(n||0).toLocaleString()};
+};
 
-/* ---------- Default seed data ---------- */
-function seedIfEmpty(){
-  if(!localStorage.getItem('lm_services')){
-    const defaultServices = [
-      {id: uid(), name: 'Wash (per kg)', unit:'kg', price: 120},
-      {id: uid(), name: 'Dry Clean (per item)', unit:'item', price: 250},
-      {id: uid(), name: 'Iron (per item)', unit:'item', price: 40},
-      {id: uid(), name: 'Wash & Iron (per kg)', unit:'kg', price: 200}
-    ];
-    localStorage.setItem('lm_services', JSON.stringify(defaultServices));
-  }
+/* Local storage keys & initialization */
+function seedStorageIfNeeded(){
   if(!localStorage.getItem('lm_customers')) localStorage.setItem('lm_customers', JSON.stringify([]));
+  if(!localStorage.getItem('lm_services')) localStorage.setItem('lm_services', JSON.stringify([]));
   if(!localStorage.getItem('lm_orders')) localStorage.setItem('lm_orders', JSON.stringify([]));
   if(!localStorage.getItem('lm_payments')) localStorage.setItem('lm_payments', JSON.stringify([]));
-  if(!localStorage.getItem('lm_voucherSeq')) localStorage.setItem('lm_voucherSeq', '1000'); // start voucher number
+  if(!localStorage.getItem('lm_voucherSeq')) localStorage.setItem('lm_voucherSeq','1000');
   if(!localStorage.getItem('lm_settings')) localStorage.setItem('lm_settings', JSON.stringify({currency:'PKR', defaultPaymentMethod:'Cash'}));
 }
-
-/* ---------- Storage helpers ---------- */
 const storage = {
   customers(){return JSON.parse(localStorage.getItem('lm_customers')||'[]')},
-  saveCustomers(arr){ localStorage.setItem('lm_customers', JSON.stringify(arr)) },
+  saveCustomers(a){localStorage.setItem('lm_customers', JSON.stringify(a))},
   services(){return JSON.parse(localStorage.getItem('lm_services')||'[]')},
-  saveServices(arr){ localStorage.setItem('lm_services', JSON.stringify(arr)) },
+  saveServices(a){localStorage.setItem('lm_services', JSON.stringify(a))},
   orders(){return JSON.parse(localStorage.getItem('lm_orders')||'[]')},
-  saveOrders(arr){ localStorage.setItem('lm_orders', JSON.stringify(arr)) },
+  saveOrders(a){localStorage.setItem('lm_orders', JSON.stringify(a))},
   payments(){return JSON.parse(localStorage.getItem('lm_payments')||'[]')},
-  savePayments(arr){ localStorage.setItem('lm_payments', JSON.stringify(arr)) },
+  savePayments(a){localStorage.setItem('lm_payments', JSON.stringify(a))},
   nextVoucher(){
     let v = Number(localStorage.getItem('lm_voucherSeq')||1000);
     v++; localStorage.setItem('lm_voucherSeq', String(v));
     return LND-${String(v).padStart(4,'0')};
   },
-  settings(){ return JSON.parse(localStorage.getItem('lm_settings')||'{}') },
-  saveSettings(s){ localStorage.setItem('lm_settings', JSON.stringify(s)) }
+  settings(){return JSON.parse(localStorage.getItem('lm_settings')||'{}')},
+  saveSettings(s){localStorage.setItem('lm_settings', JSON.stringify(s))}
 };
 
-/* ---------- Rendering ---------- */
-
+/* Render helpers */
 function renderStats(){
-  const customers = storage.customers().length;
+  const cust = storage.customers().length;
   const orders = storage.orders().length;
   const services = storage.services().length;
-  const outstanding = storage.orders().reduce((acc,o)=> acc + (Number(o.total || 0) - Number(o.paid || 0)), 0);
+  const outstanding = storage.orders().reduce((acc,o)=> acc + (Number(o.total||0) - Number(o.paid||0)), 0);
 
-  qs('#statCustomers').textContent = customers;
+  qs('#statCustomers').textContent = cust;
   qs('#statOrders').textContent = orders;
   qs('#statServices').textContent = services;
   qs('#statBalance').textContent = formatCurrency(outstanding);
+  qs('#todayDate').textContent = todayDate();
 }
 
 function renderRecentOrders(){
   const tbody = qs('#recentOrdersTbl tbody');
-  tbody.innerHTML = '';
-  const orders = storage.orders().slice().sort((a,b)=> new Date(b.date) - new Date(a.date)).slice(0,7);
-  if(!orders.length){
-    tbody.innerHTML = '<tr><td colspan="5" class="empty">No orders yet</td></tr>';
-    return;
-  }
-  orders.forEach(o=>{
-    const customer = storage.customers().find(c=>c.id===o.customerId) || {name:'Unknown'};
-    const tr = document.createElement('tr');
-    tr.innerHTML = <td>${o.voucher}</td><td>${customer.name||customer.phone||'—'}</td><td>${new Date(o.date).toLocaleDateString()}</td><td>${o.status}</td><td>${formatCurrency(o.total)}</td>;
-    tbody.appendChild(tr);
-  });
+  const arr = storage.orders().slice().sort((a,b)=> new Date(b.date) - new Date(a.date)).slice(0,7);
+  if(!arr.length){ tbody.innerHTML = '<tr><td colspan="5" class="empty">No orders yet</td></tr>'; return; }
+  tbody.innerHTML = arr.map(o=>{
+    const c = storage.customers().find(x=>x.id===o.customerId) || {};
+    return <tr><td>${o.voucher}</td><td>${c.name||'—'}</td><td>${new Date(o.date).toLocaleDateString()}</td><td>${o.status}</td><td>${formatCurrency(o.total)}</td></tr>;
+  }).join('');
 }
 
 function renderCustomers(filter=''){
   const tbody = qs('#customersTable tbody');
-  const arr = storage.customers().filter(c=>{
-    const s = ${c.name} ${c.phone} ${c.email} ${c.address}.toLowerCase();
-    return s.includes(filter.toLowerCase());
-  });
-  tbody.innerHTML = arr.length ? arr.map(c=>`
-    <tr>
-      <td>${c.id}</td>
-      <td>${c.name}</td>
-      <td>${c.phone}</td>
-      <td>${c.address || ''}</td>
-      <td>
-        <button class="btn btn-ghost" data-action="view" data-id="${c.id}">View</button>
-        <button class="btn btn-ghost" data-action="edit" data-id="${c.id}">Edit</button>
-        <button class="btn btn-danger" data-action="delete" data-id="${c.id}">Delete</button>
-      </td>
-    </tr>
-  `).join('') : '<tr><td colspan="5" class="empty">No customers found</td></tr>';
+  let arr = storage.customers();
+  if(filter) arr = arr.filter(c=> (${c.name} ${c.phone} ${c.address}).toLowerCase().includes(filter.toLowerCase()));
+  if(!arr.length){ tbody.innerHTML = '<tr><td colspan="5" class="empty">No customers</td></tr>'; return; }
+  tbody.innerHTML = arr.map(c=>`<tr><td>${c.id}</td><td>${c.name}</td><td>${c.phone}</td><td>${c.address||''}</td><td>
+    <button class="btn btn-ghost" data-action="view-cust" data-id="${c.id}">View</button>
+    <button class="btn btn-ghost" data-action="edit-cust" data-id="${c.id}">Edit</button>
+    <button class="btn btn-danger" data-action="del-cust" data-id="${c.id}">Delete</button>
+  </td></tr>`).join('');
 }
 
 function renderServices(){
   const tbody = qs('#servicesTable tbody');
   const arr = storage.services();
-  tbody.innerHTML = arr.length ? arr.map(s=>`
-    <tr>
-      <td>${s.id}</td>
-      <td>${s.name}</td>
-      <td class="small">${s.unit||'unit'}</td>
-      <td>${formatCurrency(s.price)}</td>
-      <td>
-        <button class="btn btn-ghost" data-action="edit" data-id="${s.id}">Edit</button>
-        <button class="btn btn-danger" data-action="delete" data-id="${s.id}">Delete</button>
-      </td>
-    </tr>
-  `).join('') : '<tr><td colspan="5" class="empty">No services defined</td></tr>';
+  if(!arr.length){tbody.innerHTML = '<tr><td colspan="5" class="empty">No services</td></tr>'; return;}
+  tbody.innerHTML = arr.map(s=>`<tr><td>${s.id}</td><td>${s.name}</td><td>${s.unit||'unit'}</td><td>${formatCurrency(s.price)}</td><td>
+    <button class="btn btn-ghost" data-action="edit-svc" data-id="${s.id}">Edit</button>
+    <button class="btn btn-danger" data-action="del-svc" data-id="${s.id}">Delete</button>
+  </td></tr>`).join('');
 }
 
 function renderOrders(filterStatus=''){
   const tbody = qs('#ordersTable tbody');
   let arr = storage.orders().slice().sort((a,b)=> new Date(b.date)-new Date(a.date));
   if(filterStatus) arr = arr.filter(o=>o.status===filterStatus);
-  tbody.innerHTML = arr.length ? arr.map(o=>{
+  if(!arr.length){ tbody.innerHTML = '<tr><td colspan="7" class="empty">No orders</td></tr>'; return; }
+  tbody.innerHTML = arr.map(o=>{
     const c = storage.customers().find(x=>x.id===o.customerId) || {};
     return `<tr>
-      <td>${o.voucher}</td>
-      <td>${c.name||c.phone||'—'}</td>
-      <td>${new Date(o.date).toLocaleDateString()}</td>
-      <td>${o.status}</td>
-      <td>${formatCurrency(o.paid||0)}</td>
-      <td>${formatCurrency(o.total||0)}</td>
+      <td>${o.voucher}</td><td>${c.name||'—'}</td><td>${new Date(o.date).toLocaleDateString()}</td><td>${o.status}</td>
+      <td>${formatCurrency(o.paid||0)}</td><td>${formatCurrency(o.total||0)}</td>
       <td>
-        <button class="btn btn-ghost" data-action="view" data-id="${o.id}">View</button>
-        <button class="btn btn-ghost" data-action="pay" data-id="${o.id}">Pay</button>
-        <button class="btn btn-danger" data-action="delete" data-id="${o.id}">Delete</button>
+        <button class="btn btn-ghost" data-action="view-order" data-id="${o.id}">View</button>
+        <button class="btn btn-ghost" data-action="pay-order" data-id="${o.id}">Pay</button>
+        <button class="btn btn-danger" data-action="del-order" data-id="${o.id}">Delete</button>
       </td>
-    </tr>`; }).join('') : '<tr><td colspan="7" class="empty">No orders</td></tr>';
+    </tr>`;
+  }).join('');
 }
 
 function renderPayments(){
   const tbody = qs('#paymentsTable tbody');
   const arr = storage.payments().slice().sort((a,b)=> new Date(b.date)-new Date(a.date));
-  tbody.innerHTML = arr.length ? arr.map(p=>{
+  if(!arr.length){ tbody.innerHTML = '<tr><td colspan="5" class="empty">No payments recorded</td></tr>'; return; }
+  tbody.innerHTML = arr.map(p=>{
     const o = storage.orders().find(x=>x.id===p.orderId) || {};
     const c = storage.customers().find(x=>x.id===o.customerId) || {};
     return <tr><td>${new Date(p.date).toLocaleDateString()}</td><td>${o.voucher||'—'}</td><td>${c.name||'—'}</td><td>${formatCurrency(p.amount)}</td><td>${p.method||'—'}</td></tr>;
-  }).join('') : '<tr><td colspan="5" class="empty">No payments recorded</td></tr>';
+  }).join('');
 }
 
-/* ---------- Panels and modal ---------- */
+/* -------------------------
+   Panels & Modal functions
+   ------------------------*/
 function showPanel(name){
   qsa('main.container section.panel').forEach(sec => sec.style.display = 'none');
   qsa('.nav-links button').forEach(b=>b.classList.remove('active'));
@@ -592,15 +482,14 @@ function showPanel(name){
   if(btn) btn.classList.add('active');
   const panel = qs(#panel-${name});
   if(panel) panel.style.display = 'block';
-  // refresh
   renderAll();
 }
 
-/* Modal helpers */
-function showModal(innerHtml){
+/* Modal show/close */
+function showModal(html){
   const backdrop = qs('#modalBackdrop');
   const win = qs('#modalWindow');
-  win.innerHTML = innerHtml;
+  win.innerHTML = html;
   backdrop.style.display = 'flex';
   backdrop.setAttribute('aria-hidden','false');
   setTimeout(()=>win.classList.add('show'),10);
@@ -612,38 +501,41 @@ function closeModal(){
   setTimeout(()=>{ backdrop.style.display='none'; backdrop.setAttribute('aria-hidden','true'); win.innerHTML=''; },120);
 }
 
-/* ---------- Customer flows ---------- */
+/* -------------------------
+   Customer features
+   ------------------------*/
 function openAddCustomer(prefill={}){
   showModal(`
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <h3 style="margin:0">Add Customer</h3>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 style="margin:0">${prefill.id ? 'Edit' : 'Add'} Customer</h3>
       <button class="btn btn-ghost" id="closeModalBtn">Close</button>
     </div>
-    <div style="display:grid;gap:10px">
-      <label>Name<input id="custName" value="${prefill.name||''}" placeholder="Customer name" /></label>
-      <label>Phone<input id="custPhone" value="${prefill.phone||''}" placeholder="03xxxxxxxxx" /></label>
-      <label>Address<textarea id="custAddress" placeholder="Address">${prefill.address||''}</textarea></label>
-      <div style="display:flex;gap:10px;justify-content:flex-end">
-        <button class="btn btn-ghost" id="cancelAdd">Cancel</button>
-        <button class="btn btn-primary" id="saveCustomer">Save Customer</button>
+    <div style="display:grid;gap:8px">
+      <label>Name<input id="custName" value="${prefill.name||''}" /></label>
+      <label>Phone<input id="custPhone" value="${prefill.phone||''}" /></label>
+      <label>Address<textarea id="custAddress">${prefill.address||''}</textarea></label>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button class="btn btn-ghost" id="cancelCust">Cancel</button>
+        <button class="btn btn-primary" id="saveCust">${prefill.id ? 'Save' : 'Add'}</button>
       </div>
     </div>
   `);
-
   qs('#closeModalBtn').addEventListener('click', closeModal);
-  qs('#cancelAdd').addEventListener('click', closeModal);
-  qs('#saveCustomer').addEventListener('click', ()=>{
+  qs('#cancelCust').addEventListener('click', closeModal);
+  qs('#saveCust').addEventListener('click', ()=>{
     const name = qs('#custName').value.trim();
     const phone = qs('#custPhone').value.trim();
     const address = qs('#custAddress').value.trim();
-    if(!name || !phone){ alert('Please provide a name and phone'); return; }
+    if(!name || !phone){ alert('Name and phone required'); return; }
     const customers = storage.customers();
-    const newC = { id: uid(), name, phone, address, dateAdded: new Date().toISOString() };
-    customers.push(newC);
-    storage.saveCustomers(customers);
-    closeModal();
-    renderAll();
-    showPanel('customers');
+    if(prefill.id){
+      const updated = customers.map(c=> c.id===prefill.id ? {...c, name, phone, address} : c);
+      storage.saveCustomers(updated);
+    } else {
+      customers.push({ id: uid(), name, phone, address, dateAdded: new Date().toISOString() });
+      storage.saveCustomers(customers);
+    }
+    closeModal(); renderAll(); showPanel('customers');
   });
 }
 
@@ -651,88 +543,40 @@ function handleCustomerTableClick(e){
   const action = e.target.getAttribute('data-action');
   const id = e.target.getAttribute('data-id');
   if(!action || !id) return;
-  if(action==='view'){
+  if(action==='view-cust'){
     const c = storage.customers().find(x=>x.id===id);
-    showModal(`
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <h3 style="margin:0">Customer Details</h3>
-        <button class="btn btn-ghost" id="closeModalBtn">Close</button>
-      </div>
-      <div style="display:grid;gap:8px">
-        <div><strong>Name:</strong> ${c.name}</div>
-        <div><strong>Phone:</strong> ${c.phone}</div>
-        <div><strong>Address:</strong> ${c.address||'—'}</div>
-        <div style="height:8px"></div>
-        <div style="display:flex;gap:8px;justify-content:flex-end">
-          <button class="btn btn-primary" id="newOrderFromCust">Create Order</button>
-        </div>
-      </div>
-    `);
+    showModal(`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <h3 style="margin:0">Customer</h3><button class="btn btn-ghost" id="closeModalBtn">Close</button>
+    </div><div style="display:grid;gap:8px"><div><strong>Name:</strong> ${c.name}</div><div><strong>Phone:</strong> ${c.phone}</div><div><strong>Address:</strong> ${c.address||'—'}</div>
+    <div style="height:8px"></div><div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" id="newOrderFromCust">Create Order</button></div></div>`);
     qs('#closeModalBtn').addEventListener('click', closeModal);
-    qs('#newOrderFromCust').addEventListener('click', ()=>{
-      closeModal();
-      openCreateOrder(id);
-    });
-  } else if(action==='edit'){
+    qs('#newOrderFromCust').addEventListener('click', ()=>{ closeModal(); openCreateOrder(id); });
+  } else if(action==='edit-cust'){
     const c = storage.customers().find(x=>x.id===id);
-    closeModal();
-    openEditCustomer(c);
-  } else if(action==='delete'){
-    if(!confirm('Delete this customer? This will not delete their orders.')) return;
+    openAddCustomer(c);
+  } else if(action==='del-cust'){
+    if(!confirm('Delete this customer? This does not delete orders.')) return;
     const arr = storage.customers().filter(x=>x.id!==id);
-    storage.saveCustomers(arr);
-    renderAll();
+    storage.saveCustomers(arr); renderAll();
   }
 }
 
-function openEditCustomer(c){
-  showModal(`
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <h3 style="margin:0">Edit Customer</h3>
-      <button class="btn btn-ghost" id="closeModalBtn">Close</button>
-    </div>
-    <div style="display:grid;gap:10px">
-      <label>Name<input id="custName" value="${c.name||''}" /></label>
-      <label>Phone<input id="custPhone" value="${c.phone||''}" /></label>
-      <label>Address<textarea id="custAddress">${c.address||''}</textarea></label>
-      <div style="display:flex;gap:10px;justify-content:flex-end">
-        <button class="btn btn-ghost" id="cancelEdit">Cancel</button>
-        <button class="btn btn-primary" id="saveCustomerEdit">Save</button>
-      </div>
-    </div>
-  `);
-
-  qs('#closeModalBtn').addEventListener('click', closeModal);
-  qs('#cancelEdit').addEventListener('click', closeModal);
-  qs('#saveCustomerEdit').addEventListener('click', ()=>{
-    const name = qs('#custName').value.trim();
-    const phone = qs('#custPhone').value.trim();
-    const address = qs('#custAddress').value.trim();
-    if(!name||!phone){ alert('Name and phone required'); return; }
-    const arr = storage.customers().map(x=>{
-      if(x.id===c.id) return {...x, name, phone, address};
-      return x;
-    });
-    storage.saveCustomers(arr);
-    closeModal();
-    renderAll();
-  });
-}
-
-/* ---------- Services flows ---------- */
+/* -------------------------
+   Service features
+   ------------------------*/
 function openAddService(prefill={}){
   showModal(`
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
       <h3 style="margin:0">${prefill.id ? 'Edit' : 'Add'} Service</h3>
       <button class="btn btn-ghost" id="closeModalBtn">Close</button>
     </div>
-    <div style="display:grid;gap:10px">
+    <div style="display:grid;gap:8px">
       <label>Service name<input id="svcName" value="${prefill.name||''}" /></label>
       <label>Unit<input id="svcUnit" value="${prefill.unit||'kg'}" /></label>
-      <label>Price<input id="svcPrice" type="number" value="${prefill.price||120}" /></label>
-      <div style="display:flex;gap:10px;justify-content:flex-end">
+      <label>Price<input id="svcPrice" type="number" value="${prefill.price||0}" /></label>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
         <button class="btn btn-ghost" id="cancelSvc">Cancel</button>
-        <button class="btn btn-primary" id="saveSvc">Save Service</button>
+        <button class="btn btn-primary" id="saveSvc">${prefill.id ? 'Save' : 'Add'}</button>
       </div>
     </div>
   `);
@@ -741,17 +585,17 @@ function openAddService(prefill={}){
   qs('#saveSvc').addEventListener('click', ()=>{
     const name = qs('#svcName').value.trim();
     const unit = qs('#svcUnit').value.trim();
-    const price = Number(qs('#svcPrice').value);
-    if(!name || !price) { alert('Provide name and price'); return; }
+    const price = Number(qs('#svcPrice').value || 0);
+    if(!name || !price){ alert('Service name & price required'); return; }
     const arr = storage.services();
     if(prefill.id){
       const res = arr.map(s=> s.id===prefill.id ? {...s, name, unit, price} : s);
       storage.saveServices(res);
     } else {
-      arr.push({id: uid(), name, unit, price});
+      arr.push({ id: uid(), name, unit, price });
       storage.saveServices(arr);
     }
-    closeModal(); renderAll();
+    closeModal(); renderAll(); showPanel('services');
   });
 }
 
@@ -760,17 +604,18 @@ function handleServicesTableClick(e){
   const id = e.target.getAttribute('data-id');
   if(!action || !id) return;
   const svc = storage.services().find(x=>x.id===id);
-  if(action==='edit') openAddService(svc);
-  if(action==='delete'){
-    if(!confirm('Delete service? Existing orders keep their values.')) return;
+  if(action==='edit-svc') openAddService(svc);
+  if(action==='del-svc'){
+    if(!confirm('Delete service? Existing orders keep their recorded prices.')) return;
     const arr = storage.services().filter(x=>x.id!==id);
     storage.saveServices(arr); renderAll();
   }
 }
 
-/* ---------- Orders flows ---------- */
+/* -------------------------
+   Orders & Payments
+   ------------------------*/
 function openCreateOrder(customerId=null){
-  // Build order modal with dynamic service lines
   const services = storage.services();
   const customers = storage.customers();
   const voucher = storage.nextVoucher();
@@ -782,39 +627,27 @@ function openCreateOrder(customerId=null){
     </div>
     <div id="orderForm" style="display:grid;gap:8px">
       <label>Customer
-        <select id="orderCustomer">
-          <option value="">-- Select customer --</option>
-          ${custOptions}
-        </select>
+        <select id="orderCustomer"><option value="">-- Select customer --</option>${custOptions}</select>
       </label>
       <div id="serviceLines"></div>
-      <div style="display:flex;gap:8px;justify-content:space-between;align-items:center">
-        <div class="muted-small">Add service lines to the order</div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-ghost" id="addServiceLine">+ Service</button>
-        </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="muted small">Add service lines</div>
+        <div style="display:flex;gap:8px"><button class="btn btn-ghost" id="addServiceLine">+ Service</button></div>
       </div>
-
       <div style="display:flex;gap:8px;justify-content:space-between;align-items:center">
         <div class="small muted">Order date</div>
         <input type="date" id="orderDate" value="${new Date().toISOString().slice(0,10)}"/>
       </div>
-
       <div style="display:flex;gap:8px;justify-content:space-between;align-items:center">
         <div><strong>Total:</strong> <span id="orderTotal">${formatCurrency(0)}</span></div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-ghost" id="cancelOrder">Cancel</button>
-          <button class="btn btn-primary" id="saveOrder">Save Order</button>
-        </div>
+        <div style="display:flex;gap:8px"><button class="btn btn-ghost" id="cancelOrder">Cancel</button><button class="btn btn-primary" id="saveOrder">Save Order</button></div>
       </div>
     </div>
   `);
 
-  // close handlers
   qs('#closeModalBtn').addEventListener('click', closeModal);
   qs('#cancelOrder').addEventListener('click', closeModal);
 
-  // add initial one line
   function createServiceLine(lineData={}){
     const id = uid();
     const selectOptions = services.map(s=><option value="${s.id}" ${s.id===lineData.serviceId?'selected':''}>${s.name} — ${s.unit} — ${formatCurrency(s.price)}</option>).join('');
@@ -824,17 +657,14 @@ function openCreateOrder(customerId=null){
       <select data-role="service" data-line="${id}"><option value="">-- choose service --</option>${selectOptions}</select>
       <input type="number" min="0" data-role="qty" data-line="${id}" placeholder="qty" value="${lineData.qty||1}" />
       <input type="number" min="0" data-role="price" data-line="${id}" placeholder="price" value="${lineData.price||0}" />
-      <div style="display:flex;gap:6px">
+      <div style="display:flex;gap:6px;align-items:center">
         <button class="btn btn-ghost" data-action="dup" data-line="${id}">⎘</button>
         <button class="btn btn-danger" data-action="rm" data-line="${id}">✕</button>
       </div>
     `;
     qs('#serviceLines').appendChild(div);
 
-    // wire events
-    div.querySelectorAll('[data-role]').forEach(el=>{
-      el.addEventListener('input', calculateTotal);
-    });
+    div.querySelectorAll('[data-role]').forEach(el=> el.addEventListener('input', calculateTotal));
     div.querySelectorAll('button[data-action]').forEach(b=>{
       b.addEventListener('click', (ev)=>{
         const act = b.getAttribute('data-action');
@@ -850,8 +680,7 @@ function openCreateOrder(customerId=null){
       });
     });
 
-    // when service selected, auto-populate price
-    div.querySelector(select[data-role="service"][data-line="${id}"]).addEventListener('change', (ev)=>{
+    div.querySelector(select[data-role="service"][data-line="${id}"]).addEventListener('change',(ev)=>{
       const sid = ev.target.value;
       const svc = services.find(s=>s.id===sid);
       if(svc) div.querySelector([data-role="price"][data-line="${id}"]).value = svc.price;
@@ -859,13 +688,11 @@ function openCreateOrder(customerId=null){
     });
   }
 
-  // initial
   createServiceLine();
-
-  qs('#addServiceLine').addEventListener('click', ()=>createServiceLine());
+  qs('#addServiceLine').addEventListener('click', ()=> createServiceLine());
 
   function calculateTotal(){
-    let total = 0;
+    let total=0;
     qs('#serviceLines').querySelectorAll('.service-line').forEach(line=>{
       const qty = Number(line.querySelector('[data-role="qty"]').value || 0);
       const price = Number(line.querySelector('[data-role="price"]').value || 0);
@@ -874,10 +701,9 @@ function openCreateOrder(customerId=null){
     qs('#orderTotal').textContent = formatCurrency(total);
   }
 
-  // save order
   qs('#saveOrder').addEventListener('click', ()=>{
     const custId = qs('#orderCustomer').value;
-    if(!custId){ alert('Select a customer or create one first'); return; }
+    if(!custId){ alert('Select a customer or create one'); return; }
     const lines = [];
     qs('#serviceLines').querySelectorAll('.service-line').forEach(line=>{
       const svcId = line.querySelector('[data-role="service"]').value;
@@ -886,25 +712,14 @@ function openCreateOrder(customerId=null){
       if(!svcId || qty<=0) return;
       lines.push({serviceId: svcId, qty, price, subtotal: qty*price});
     });
-    if(!lines.length){ alert('Add at least one service line with quantity'); return; }
+    if(!lines.length){ alert('Add at least one service line with qty'); return; }
     const orderDate = qs('#orderDate').value;
     const total = lines.reduce((a,b)=>a+b.subtotal,0);
     const orders = storage.orders();
-    const newOrder = {
-      id: uid(),
-      voucher,
-      customerId: custId,
-      date: new Date(orderDate).toISOString(),
-      status: 'Pending',
-      lines,
-      total,
-      paid: 0
-    };
+    const newOrder = { id: uid(), voucher, customerId: custId, date: new Date(orderDate).toISOString(), status: 'Pending', lines, total, paid: 0 };
     orders.push(newOrder);
     storage.saveOrders(orders);
-    closeModal();
-    renderAll();
-    showPanel('orders');
+    closeModal(); renderAll(); showPanel('orders');
   });
 }
 
@@ -912,157 +727,100 @@ function handleOrdersTableClick(e){
   const action = e.target.getAttribute('data-action');
   const id = e.target.getAttribute('data-id');
   if(!action || !id) return;
-  const orders = storage.orders();
-  const order = orders.find(x=>x.id===id);
-  if(action==='view'){
+  const order = storage.orders().find(x=>x.id===id);
+  if(action==='view-order'){
     const cust = storage.customers().find(c=>c.id===order.customerId) || {};
     const linesHtml = order.lines.map(l=>{
       const s = storage.services().find(x=>x.id===l.serviceId) || {};
       return <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.03)"><div>${s.name||'Service'}</div><div>${l.qty} × ${formatCurrency(l.price)} = ${formatCurrency(l.subtotal)}</div></div>;
     }).join('');
-    showModal(`
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <h3 style="margin:0">Order ${order.voucher}</h3>
-        <button class="btn btn-ghost" id="closeModalBtn">Close</button>
-      </div>
-      <div style="display:grid;gap:8px">
-        <div><strong>Customer:</strong> ${cust.name||cust.phone||'—'}</div>
-        <div><strong>Date:</strong> ${new Date(order.date).toLocaleDateString()}</div>
-        <div><strong>Status:</strong> ${order.status}</div>
-        <div style="height:8px"></div>
-        <div style="border-radius:8px;padding:8px;background:var(--glass-2)">${linesHtml}</div>
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div><strong>Total:</strong> ${formatCurrency(order.total)} <span class="small muted">Paid: ${formatCurrency(order.paid||0)}</span></div>
-          <div style="display:flex;gap:8px">
-            <button class="btn btn-ghost" id="editOrderStatus">Change Status</button>
-            <button class="btn btn-primary" id="openPaymentForOrder">Add Payment</button>
-          </div>
-        </div>
-      </div>
-    `);
+    showModal(`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="margin:0">Order ${order.voucher}</h3><button class="btn btn-ghost" id="closeModalBtn">Close</button></div>
+      <div style="display:grid;gap:8px"><div><strong>Customer:</strong> ${cust.name||'—'}</div><div><strong>Date:</strong> ${new Date(order.date).toLocaleDateString()}</div><div><strong>Status:</strong> ${order.status}</div>
+      <div style="height:8px"></div><div style="border-radius:8px;padding:8px;background:rgba(255,255,255,0.02)">${linesHtml}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><div><strong>Total:</strong> ${formatCurrency(order.total)} <span class="small muted">Paid: ${formatCurrency(order.paid||0)}</span></div>
+      <div style="display:flex;gap:8px"><button class="btn btn-ghost" id="editOrderStatus">Change Status</button><button class="btn btn-primary" id="openPaymentForOrder">Add Payment</button></div></div></div>`);
     qs('#closeModalBtn').addEventListener('click', closeModal);
     qs('#editOrderStatus').addEventListener('click', ()=>{
       closeModal();
-      showModal(`
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="margin:0">Update Status</h3><button class="btn btn-ghost" id="closeModalBtn">Close</button></div>
-        <div style="display:grid;gap:10px">
-          <select id="newStatus">
-            <option${order.status==='Pending'?' selected':''}>Pending</option>
-            <option${order.status==='In-Process'?' selected':''}>In-Process</option>
-            <option${order.status==='Completed'?' selected':''}>Completed</option>
-            <option${order.status==='Delivered'?' selected':''}>Delivered</option>
-          </select>
-          <div style="display:flex;justify-content:flex-end;gap:8px">
-            <button class="btn btn-ghost" id="cancelStatus">Cancel</button>
-            <button class="btn btn-primary" id="saveStatus">Save</button>
-          </div>
-        </div>
-      `);
+      showModal(`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="margin:0">Update Status</h3><button class="btn btn-ghost" id="closeModalBtn">Close</button></div>
+        <div style="display:grid;gap:10px"><select id="newStatus"><option${order.status==='Pending'?' selected':''}>Pending</option><option${order.status==='In-Process'?' selected':''}>In-Process</option><option${order.status==='Completed'?' selected':''}>Completed</option><option${order.status==='Delivered'?' selected':''}>Delivered</option></select>
+        <div style="display:flex;justify-content:flex-end;gap:8px"><button class="btn btn-ghost" id="cancelStatus">Cancel</button><button class="btn btn-primary" id="saveStatus">Save</button></div></div>`);
       qs('#closeModalBtn').addEventListener('click', closeModal);
       qs('#cancelStatus').addEventListener('click', closeModal);
       qs('#saveStatus').addEventListener('click', ()=>{
         const ns = qs('#newStatus').value;
         const updated = storage.orders().map(o=> o.id===order.id ? {...o, status: ns} : o);
-        storage.saveOrders(updated);
-        closeModal(); renderAll();
+        storage.saveOrders(updated); closeModal(); renderAll();
       });
     });
-    qs('#openPaymentForOrder').addEventListener('click', ()=> {
-      closeModal();
-      openPaymentModal(order.id);
-    });
-  } else if(action==='pay'){
+    qs('#openPaymentForOrder').addEventListener('click', ()=> { closeModal(); openPaymentModal(order.id); });
+  } else if(action==='pay-order'){
     openPaymentModal(id);
-  } else if(action==='delete'){
-    if(!confirm('Delete order? This will remove order record.')) return;
+  } else if(action==='del-order'){
+    if(!confirm('Delete order?')) return;
     const arr = storage.orders().filter(x=>x.id!==id);
-    storage.saveOrders(arr);
-    renderAll();
+    storage.saveOrders(arr); renderAll();
   }
 }
 
-/* ---------- Payments ---------- */
 function openPaymentModal(orderId){
   const order = storage.orders().find(x=>x.id===orderId);
   const cust = storage.customers().find(x=>x.id===order.customerId) || {};
   const settings = storage.settings();
-  showModal(`
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <h3 style="margin:0">Payment for ${order.voucher}</h3>
-      <button class="btn btn-ghost" id="closeModalBtn">Close</button>
-    </div>
-    <div style="display:grid;gap:8px">
-      <div><strong>Customer:</strong> ${cust.name || cust.phone}</div>
-      <div><strong>Order Total:</strong> ${formatCurrency(order.total)}</div>
-      <div><strong>Already Paid:</strong> ${formatCurrency(order.paid||0)}</div>
-      <label>Amount<input id="payAmount" type="number" value="${Number(order.total) - Number(order.paid||0)}" /></label>
-      <label>Method<input id="payMethod" value="${settings.defaultPaymentMethod || 'Cash'}" /></label>
-      <div style="display:flex;justify-content:flex-end;gap:8px">
-        <button class="btn btn-ghost" id="cancelPay">Cancel</button>
-        <button class="btn btn-primary" id="savePay">Pay</button>
-      </div>
-    </div>
-  `);
+  showModal(`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="margin:0">Payment for ${order.voucher}</h3><button class="btn btn-ghost" id="closeModalBtn">Close</button></div>
+    <div style="display:grid;gap:8px"><div><strong>Customer:</strong> ${cust.name || cust.phone}</div><div><strong>Order Total:</strong> ${formatCurrency(order.total)}</div><div><strong>Already Paid:</strong> ${formatCurrency(order.paid||0)}</div>
+    <label>Amount<input id="payAmount" type="number" value="${Number(order.total) - Number(order.paid||0)}" /></label>
+    <label>Method<input id="payMethod" value="${settings.defaultPaymentMethod || 'Cash'}" /></label>
+    <div style="display:flex;justify-content:flex-end;gap:8px"><button class="btn btn-ghost" id="cancelPay">Cancel</button><button class="btn btn-primary" id="savePay">Pay</button></div></div>`);
   qs('#closeModalBtn').addEventListener('click', closeModal);
   qs('#cancelPay').addEventListener('click', closeModal);
   qs('#savePay').addEventListener('click', ()=>{
     const amt = Number(qs('#payAmount').value) || 0;
     const method = qs('#payMethod').value || 'Cash';
-    if(amt<=0){ alert('Provide a valid amount'); return; }
-    // add payment record
+    if(amt<=0){ alert('Provide valid amount'); return; }
     const pm = storage.payments();
     pm.push({ id: uid(), orderId, date: new Date().toISOString(), amount: amt, method });
     storage.savePayments(pm);
-    // update order paid
     const orders = storage.orders().map(o=> o.id===orderId ? {...o, paid: (Number(o.paid||0)+amt)} : o);
     storage.saveOrders(orders);
     closeModal(); renderAll();
   });
 }
 
-/* ---------- Reports ---------- */
+/* -------------------------
+   Reports
+   ------------------------*/
 function genReport(days){
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - days);
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - days);
   const orders = storage.orders().filter(o=> new Date(o.date) >= cutoff);
   const totalRevenue = orders.reduce((a,b)=> a + (Number(b.total||0)), 0);
   const paid = orders.reduce((a,b)=> a + (Number(b.paid||0)), 0);
   const due = totalRevenue - paid;
   const count = orders.length;
-  const servicesCount = orders.reduce((a,b)=> a + (b.lines ? b.lines.length : 0), 0);
-  return { totalRevenue, paid, due, count, servicesCount };
+  return { totalRevenue, paid, due, count };
 }
 
-/* ---------- Render all helper ---------- */
+/* -------------------------
+   Helpers & wiring events
+   ------------------------*/
 function renderAll(){
-  renderStats();
-  renderRecentOrders();
-  renderCustomers(qs('#custSearch')?.value || qs('#globalSearch')?.value || '');
-  renderServices();
-  renderOrders(qs('#filterStatus')?.value || '');
-  renderPayments();
-  qs('#todayDate').textContent = new Date().toLocaleDateString();
+  renderStats(); renderRecentOrders(); renderCustomers(qs('#custSearch')?.value || qs('#globalSearch')?.value || '');
+  renderServices(); renderOrders(qs('#filterStatus')?.value || ''); renderPayments();
+  qs('#settingCurrency').value = storage.settings().currency || 'PKR';
+  qs('#settingPaymentMethod').value = storage.settings().defaultPaymentMethod || 'Cash';
 }
 
-/* ---------- Event wiring ---------- */
+/* Wire UI events */
 function wireEvents(){
   // nav
-  qsa('.nav-links button').forEach(b=>{
-    b.addEventListener('click', ()=> showPanel(b.getAttribute('data-panel')));
-  });
+  qsa('.nav-links button').forEach(b=> b.addEventListener('click', ()=> showPanel(b.getAttribute('data-panel'))));
 
-  // global search
-  qs('#globalSearch').addEventListener('input', (e)=>{
-    renderCustomers(e.target.value);
-    // also filter orders and recent results by voucher/customer?
-    renderOrders();
-  });
+  // search
+  qs('#globalSearch').addEventListener('input',(e)=> renderCustomers(e.target.value));
 
-  // open add customer
-  qs('#openAddCustomer').addEventListener('click', ()=> openAddCustomer());
+  // customers
   qs('#btnNewCustomer').addEventListener('click', ()=> openAddCustomer());
-
-  // customers table actions
+  qs('#openAddCustomer').addEventListener('click', ()=> openAddCustomer());
   qs('#customersTable').addEventListener('click', handleCustomerTableClick);
   qs('#custSearch').addEventListener('input', ()=> renderCustomers(qs('#custSearch').value));
 
@@ -1076,62 +834,46 @@ function wireEvents(){
   qs('#ordersTable').addEventListener('click', handleOrdersTableClick);
   qs('#filterStatus').addEventListener('change', ()=> renderOrders(qs('#filterStatus').value));
 
-  // payments table
-  // paymentsTable is read-only; payments created from order modal
-  // modal backdrop close
-  qs('#modalBackdrop').addEventListener('click', (e)=>{
-    if(e.target === e.currentTarget) closeModal();
-  });
+  // payments table is read-only; created via order modal
 
-  // reports
-  qsa('[data-report]').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      const days = Number(b.getAttribute('data-report'));
-      const r = genReport(days);
-      qs('#reportOutput').innerHTML = `
-        <div style="display:flex;gap:18px;flex-wrap:wrap">
-          <div class="card"><div class="small muted">Orders</div><div style="margin-top:6px;font-weight:800">${r.count}</div></div>
-          <div class="card"><div class="small muted">Revenue</div><div style="margin-top:6px;font-weight:800">${formatCurrency(r.totalRevenue)}</div></div>
-          <div class="card"><div class="small muted">Paid</div><div style="margin-top:6px;font-weight:800">${formatCurrency(r.paid)}</div></div>
-          <div class="card"><div class="small muted">Due</div><div style="margin-top:6px;font-weight:800">${formatCurrency(r.due)}</div></div>
-        </div>
-      `;
-    });
-  });
+  // modal backdrop click to close
+  qs('#modalBackdrop').addEventListener('click', (e)=> { if(e.target === e.currentTarget) closeModal(); });
 
-  // settings
+  // reports buttons
+  qsa('[data-report]').forEach(b=> b.addEventListener('click', ()=>{
+    const days = Number(b.getAttribute('data-report'));
+    const r = genReport(days);
+    qs('#reportOutput').innerHTML = `<div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div class="card"><div class="small muted">Orders</div><div style="margin-top:6px;font-weight:800">${r.count}</div></div>
+      <div class="card"><div class="small muted">Revenue</div><div style="margin-top:6px;font-weight:800">${formatCurrency(r.totalRevenue)}</div></div>
+      <div class="card"><div class="small muted">Paid</div><div style="margin-top:6px;font-weight:800">${formatCurrency(r.paid)}</div></div>
+      <div class="card"><div class="small muted">Due</div><div style="margin-top:6px;font-weight:800">${formatCurrency(r.due)}</div></div>
+    </div>`;
+  }));
+
+  // settings save on change
   qs('#settingCurrency').addEventListener('change', ()=> {
     const s = storage.settings(); s.currency = qs('#settingCurrency').value; storage.saveSettings(s); renderAll();
   });
   qs('#settingPaymentMethod').addEventListener('change', ()=> {
     const s = storage.settings(); s.defaultPaymentMethod = qs('#settingPaymentMethod').value; storage.saveSettings(s);
   });
-
-  // customers table view/edit handled above
-  // orders table handled above
-
-  // handle delegated events for services & customers (buttons inside rows)
-  // done via table click listeners added earlier
 }
 
-/* ---------- Init ---------- */
+/* -------------------------
+   Init
+   ------------------------*/
 function init(){
-  seedIfEmpty();
+  seedStorageIfNeeded();
   wireEvents();
-  // populate settings
-  const st = storage.settings();
-  qs('#settingCurrency').value = st.currency || 'PKR';
-  qs('#settingPaymentMethod').value = st.defaultPaymentMethod || 'Cash';
-  // show dashboard
   showPanel('dashboard');
 }
 
-/* run */
+/* Run */
 init();
 renderAll();
 
-/* Expose some helpers to console for debugging */
-window.LaundryStorage = storage;
+/* For debugging in console: window.Laundry = storage; */
 </script>
 </body>
 </html>
